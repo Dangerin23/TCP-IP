@@ -9,6 +9,8 @@ def main():
     s = input()
     s = strtobits(s)
     print(s)
+    s = encode(s,"1001")
+    print(s)
 
 if __name__ == "__main__":
     main()
