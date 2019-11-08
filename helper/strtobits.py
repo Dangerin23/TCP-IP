@@ -1,7 +1,22 @@
+import binascii
+
+def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
+    bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
+    return bits.zfill(8 * ((len(bits) + 7) // 8))
+
+def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
+    n = int(bits, 2)
+    return int2bytes(n).decode(encoding, errors)
+
+def int2bytes(i):
+    hex_string = '%x' % i
+    n = len(hex_string)
+    return binascii.unhexlify(hex_string.zfill(n + (n & 1)))
+
 def strtobits(msg):
-    bits = ""
-    for i in range(0,len(msg)):
-        bits += '{0:b}'.format(ord(msg[i]))
-        while len(bits)<=8:
-            bits = "0" + bits
+    bits = text_to_bits(msg)
     return bits
+
+def bitstostr(bits):
+    msg = text_from_bits(bits)
+    return msg

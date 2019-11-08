@@ -8,8 +8,9 @@ def main():
     print("Enter message : ")
     s = input()
     s = strtobits(s)
-    print(s)
-    s = encode(s,"1001")
+    # print(s)
+    s = clientdll(s)
+    s = serverdll(s)
     print(s)
 
 if __name__ == "__main__":
