@@ -8,7 +8,6 @@ def main():
     print("Enter message : ")
     s = input()
     s = strtobits(s)
-    # print(s)
     s = clientdll(s)
     s = serverdll(s)
     print(s)

@@ -1,26 +1,17 @@
 from helper.CRC import *
+from helper.bitsTopackets import bitsTopackets
+from helper.err_gen import err_gen
+
+PACKET_SIZE = 32
 CRC_KEY = "1001"
 
 def clientdll(msg):
     packets = []
     encoded_packets = []
-    packets = bitsTopackets(msg)
+    packets = bitsTopackets(msg,PACKET_SIZE)
     for pack in packets:
         pack = encode(pack,CRC_KEY)
+        pack = err_gen(pack)
         encoded_packets.append(pack)
-    res = ""
-    for pack in encoded_packets:
-        res += pack
-    return res
-    
 
-def bitsTopackets(msg):
-    pack = []
-    for i in range(0,len(msg),32):
-        a = ""
-        if i+32 < len(msg):
-            a += msg[i:i+32]
-        else:
-            a += msg[i:len(msg)]
-        pack.append(a)
-    return pack
+    return ''.join(encoded_packets)

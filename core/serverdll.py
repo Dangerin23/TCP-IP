@@ -1,33 +1,22 @@
 from helper.CRC import *
-from core.clientdll import CRC_KEY
+from helper.bitsTopackets import *
+from core.clientdll import CRC_KEY,PACKET_SIZE
 from helper.strtobits import bitstostr
 
 def serverdll(bits):
     packets = []
     bitstream = ""
-    packets = bitsTopacketsServer(bits)
+    flag = 0
+    packets = bitsTopackets(bits,PACKET_SIZE + len(CRC_KEY)-1)
     for pack in packets:
         rem = mod2(pack,CRC_KEY)
-        if rem == "000":
-            bitstream += pack[0:len(pack)-3]
-    
-    org_msg = bitstostr(bitstream)
-    return org_msg
-    # for i in range(0,len(bitstream),8):
-    #     a = ""
-    #     a += bitstream[i:i+8]
-    #     b = int(a,2)
-    #     org_msg += chr(b)
-    # return org_msg
-
-
-def bitsTopacketsServer(msg):
-    pack = []
-    for i in range(0,len(msg),35):
-        a = ""
-        if i+32 < len(msg):
-            a += msg[i:i+35]
+        if rem == '0'*(len(CRC_KEY)-1):
+            bitstream += pack[0:len(pack)-(len(CRC_KEY)-1)]
         else:
-            a += msg[i:len(msg)]
-        pack.append(a)
-    return pack
+            org_msg = "Error found in a packet, please send the message again."
+            flag = 1
+            break
+    if flag == 0:
+        org_msg = bitstostr(bitstream)
+
+    return org_msg
