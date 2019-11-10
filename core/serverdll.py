@@ -1,13 +1,13 @@
 from helper.CRC import *
 from helper.bitsTopackets import *
-from core.clientdll import CRC_KEY,PACKET_SIZE
+from core.clientdll import CRC_KEY,PACKET_SIZE,FRAME_KEY
 from helper.strtobits import bitstostr
+from helper.framing import deFrame
 
 def serverdll(bits):
-    packets = []
     bitstream = ""
     flag = 0
-    packets = bitsTopackets(bits,PACKET_SIZE + len(CRC_KEY)-1)
+    packets = deFrame(bits,FRAME_KEY)
     for pack in packets:
         rem = mod2(pack,CRC_KEY)
         if rem == '0'*(len(CRC_KEY)-1):
