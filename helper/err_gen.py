@@ -6,11 +6,11 @@ def err_gen(bits):
         ls = random.sample(range(len(bits)),3)
         for b in ls:
             bits = changeBit(bits,b)
-    elif r >= 45:
+    elif r >= 48:
         ls = random.sample(range(len(bits)),2)
         for b in ls:
             bits = changeBit(bits,b)
-    elif r>=35:
+    elif r>=44:
         b = random.randint(0,len(bits))
         bits = changeBit(bits,b)
 

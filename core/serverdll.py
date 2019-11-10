@@ -1,13 +1,16 @@
 from helper.CRC import *
-from helper.bitsTopackets import *
-from core.clientdll import CRC_KEY,PACKET_SIZE,FRAME_KEY
-from helper.strtobits import bitstostr
 from helper.framing import deFrame
+from settings import CRC_KEY,FRAME_KEY
+
 
 def serverdll(bits):
     bitstream = ""
     flag = 0
+
+    # Removing the flags and extra bits
     packets = deFrame(bits,FRAME_KEY)
+    
+    # Error Detection using CRC
     for pack in packets:
         rem = mod2(pack,CRC_KEY)
         if rem == '0'*(len(CRC_KEY)-1):
@@ -17,6 +20,6 @@ def serverdll(bits):
             flag = 1
             break
     if flag == 0:
-        org_msg = bitstostr(bitstream)
+        org_msg = bitstream
 
-    return org_msg
+    return flag,org_msg
