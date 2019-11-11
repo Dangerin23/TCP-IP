@@ -1,22 +1,20 @@
-from core.clientdll import *
-from core.serverdll import *
-from core.clientpl import *
-from core.serverpl import *
+from core.clientdll import clientdll
+from core.serverdll import serverdll
+from core.clientpl import clientpl
+from core.serverpl import serverpl
 from helper.strtobits import *
 
-def main():
-    print("Enter message : ")
-    msg = input()
+def run_client(msg):
     bits = strtobits(msg)
     frames = clientdll(bits)
     signal = clientpl(frames)
+
+    return signal
+
+def run_server(signal):
     bits = serverpl(signal)
     flag,stream = serverdll(bits)
     if flag==0:
-        rev_msg = bitstostr(stream)
-        print(rev_msg)
-    else:
-        print(stream)
-
-if __name__ == "__main__":
-    main()
+        stream = bitstostr(stream)
+    
+    return flag,stream
