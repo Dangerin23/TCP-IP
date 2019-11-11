@@ -5,11 +5,11 @@ from main import run_server
 
 print_lock = threading.Lock()
 
-def threadFunc(c):
+def threadFunc(c,addr):
     while True:
         data = c.recv(1024)
         if not data:
-            print('Bye')
+            print('Client @',addr[1],'has exited')
             print_lock.release()
             break
 
@@ -38,7 +38,7 @@ def main():
         print_lock.acquire()
         print("Connected to ",addr[0],":",addr[1])
 
-        start_new_thread(threadFunc,(client,))
+        start_new_thread(threadFunc,(client,addr))
     s.close()
 
 if __name__ == "__main__":

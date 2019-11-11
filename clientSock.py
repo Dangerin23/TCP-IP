@@ -6,7 +6,7 @@ port = 8011
 host = "127.0.0.1"
 
 s.connect((host,port))
-
+print("Enter your message:")
 msg = input()
 signal = run_client(msg)
 sg = signal.encode()
