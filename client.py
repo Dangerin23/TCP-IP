@@ -9,6 +9,7 @@ def main():
     s.connect((host,port))
 
     while True:
+        print("Enter your message")
         message = input()
         signal = run_client(message)
         s.send(signal.encode())
